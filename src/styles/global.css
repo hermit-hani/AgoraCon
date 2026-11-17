@@ -1,0 +1,209 @@
+/* Stage 1 base styles. Colour roles live in variables so the theme can be
+   changed in one place later. Marble + gold, kept high-contrast for reading. */
+:root {
+  --bg: #faf7f0;
+  --surface: #ffffff;
+  --ink: #1d2433;
+  --ink-soft: #4a5368;
+  --accent: #1f3a6e; /* primary action: deep Aegean blue */
+  --accent-ink: #ffffff;
+  --gold: #b8860b;
+  --border: #d9d2c0;
+  --error-bg: #fdeaea;
+  --error-ink: #8a1c1c;
+  --radius: 10px;
+  --max-width: 1100px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* Visible focus for keyboard users (accessibility requirement). */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+.site-header,
+main,
+.site-footer {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  border-bottom: 2px solid var(--gold);
+}
+
+.brand {
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.nav-list {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list a {
+  display: inline-block;
+  padding: 0.5rem 0.25rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Text/underline (not colour alone) marks the current page. */
+.nav-list a.active {
+  border-bottom: 3px solid var(--gold);
+}
+
+main {
+  min-height: 60vh;
+}
+
+.hero {
+  padding: 2rem 0;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 8vw, 3.6rem);
+  margin: 0 0 0.5rem;
+}
+.hero-lead {
+  font-size: 1.2rem;
+  max-width: 40rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.2rem;
+  min-height: 44px;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid var(--accent);
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.card-grid {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+}
+
+.card {
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+.card-kicker {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+.card-title {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.25rem;
+  overflow-wrap: anywhere; /* long titles must not break the layout */
+}
+.card-summary {
+  margin: 0 0 0.75rem;
+}
+
+.card-facts {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+}
+.card-facts div {
+  display: flex;
+  gap: 0.5rem;
+}
+.card-facts dt {
+  font-weight: 700;
+  min-width: 5.5rem;
+}
+.card-facts dd {
+  margin: 0;
+}
+
+.notice {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.notice-error {
+  background: var(--error-bg);
+  color: var(--error-ink);
+  border-color: var(--error-ink);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+.demo-controls {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+  max-width: 24rem;
+}
