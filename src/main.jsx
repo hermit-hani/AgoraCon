@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import { SessionsProvider } from "./context/SessionsContext.jsx";
 import "./styles/global.css";
+import "./styles/landing.css"; // after global.css so its overrides win
 
 // Provider order: Router -> data provider -> App.
 createRoot(document.getElementById("root")).render(
