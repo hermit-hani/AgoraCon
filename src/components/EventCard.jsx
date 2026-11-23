@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { dayOf, seatsLeft } from "../rules/filtering.js";
+import AddToPlanButton from "./AddToPlanButton.jsx";
 
 // One emoji per host god, shown before the event title.
 const GOD_EMOJI = {
@@ -28,22 +29,21 @@ function formatWhen(startIso, endIso) {
 }
 
 // Availability is always shown as TEXT (never colour alone).
+// Every member of a team takes one seat, so seats are counted in seats for all events.
 function seatStatus(event) {
   const left = seatsLeft(event);
-  // Team events are sold per team (one registration = one team), so count teams.
-  const noun = event.maxTeam > 1 && event.minTeam === event.maxTeam ? (left === 1 ? "team" : "teams") : left === 1 ? "seat" : "seats";
-  if (left === 0) return { text: `Sold out: no ${noun === "team" || noun === "teams" ? "teams" : "seats"} left`, tone: "out" };
+  const noun = left === 1 ? "seat" : "seats";
+  if (left === 0) return { text: "Sold out: no seats left", tone: "out" };
   if (left <= Math.max(5, Math.round(event.capacity * 0.1)))
     return { text: `Almost full: only ${left} ${noun} left`, tone: "low" };
   return { text: `${left} ${noun} left`, tone: "ok" };
 }
 
 // Props in: one event. No state here: it only displays data.
-// (The "Add to plan" button does nothing yet; plan logic comes in the next stage.)
+// The plan button (add / remove / sold out) lives in <AddToPlanButton />.
 export default function EventCard({ event }) {
   const { id, title, host, type, zone, start, end, price, summary, minAge, minTeam, maxTeam } = event;
   const status = seatStatus(event);
-  const soldOut = seatsLeft(event) === 0;
   const team = maxTeam === 1 ? "Individual" : minTeam === maxTeam ? `Teams of ${minTeam}` : `Teams of ${minTeam}-${maxTeam}`;
 
   return (
@@ -82,9 +82,7 @@ export default function EventCard({ event }) {
         <li>{team}</li>
       </ul>
       <p className={`seat-status seat-${status.tone}`}>{status.text}</p>
-      <button type="button" className="btn btn-primary" disabled={soldOut}>
-        {soldOut ? "Sold out" : "Add to plan"}
-      </button>
+      <AddToPlanButton event={event} />
     </article>
   );
 }

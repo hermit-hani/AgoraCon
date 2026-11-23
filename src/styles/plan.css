@@ -1,0 +1,65 @@
+/* Styles for the plan, register, confirmation pages and the demo panel.
+   Every rule is scoped under its own page class so it cannot leak into other pages.
+   Colours use the site variables when they exist, with fallbacks (dark teal + salmon). */
+
+.plan-page, .register-page, .confirmation-page, .demo-controls {
+  --accent: var(--salmon, #ffb4a2);
+  --panel: rgba(255, 255, 255, 0.06);
+  --line: rgba(255, 255, 255, 0.28);
+  --bad: #ffd9d2;
+}
+.plan-page, .register-page, .confirmation-page { max-width: 64rem; margin: 0 auto; padding: 1rem; }
+
+/* Visually hidden text for screen readers (inside buttons, so every button name is unique). */
+.btn .visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---- plan page ---- */
+.plan-page .plan-layout { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+@media (min-width: 52rem) { .plan-page .plan-layout { grid-template-columns: 2fr 1fr; align-items: start; } }
+.plan-page .plan-lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.plan-page .plan-line { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; display: grid; gap: 0.5rem; }
+.plan-page .plan-line h2 { margin: 0; font-size: 1.2rem; }
+.plan-page .plan-line-bad { border: 2px solid var(--accent); }
+.plan-page .plan-meta, .plan-page .plan-price { margin: 0; }
+.plan-page .plan-qty { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.plan-page .plan-qty input { min-height: 44px; width: 5rem; font: inherit; padding: 0 0.5rem; }
+.plan-page .plan-summary { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; display: grid; gap: 0.75rem; }
+.plan-page .plan-summary h2 { margin: 0; }
+.plan-page .plan-summary dl { margin: 0; display: grid; gap: 0.4rem; }
+.plan-page .plan-summary dl div { display: flex; justify-content: space-between; gap: 1rem; }
+.plan-page .plan-summary dt, .plan-page .plan-summary dd { margin: 0; }
+.plan-page .plan-total { border-top: 1px solid var(--line); padding-top: 0.4rem; font-size: 1.15rem; font-weight: 700; }
+.plan-page .btn-primary, .register-page .btn, .confirmation-page .btn, .plan-page .plan-summary .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
+/* Shared message styles (text label "Problem:" is always present, so colour is never the only signal). */
+.plan-problem { border-left: 6px solid var(--accent); background: rgba(255, 180, 162, 0.15); padding: 0.6rem 0.8rem; display: grid; gap: 0.5rem; justify-items: start; }
+.plan-problem p { margin: 0; }
+.plan-hint { font-size: 0.9rem; opacity: 0.85; }
+.plan-tag { display: block; font-weight: 600; }
+
+/* ---- register page ---- */
+.register-page form { display: grid; gap: 1.25rem; }
+.register-page fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; display: grid; gap: 0.75rem; }
+.register-page .field { display: grid; gap: 0.25rem; }
+.register-page .field input { min-height: 44px; font: inherit; padding: 0 0.6rem; }
+.register-page .field input[aria-invalid="true"] { border: 3px solid var(--accent); }
+.register-page .field-error p { margin: 0; color: var(--bad); }
+.register-page .member-row { display: grid; gap: 0.75rem; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 40rem) { .register-page .member-row { grid-template-columns: 2fr 1fr; } }
+.register-page .error-summary { border: 3px solid var(--accent); background: rgba(255, 180, 162, 0.15); padding: 0.75rem 1rem; margin-bottom: 1rem; }
+.register-page .error-summary h2 { margin: 0 0 0.4rem; font-size: 1.1rem; }
+.register-page .error-summary ul { margin: 0; padding-left: 1.2rem; }
+.register-page .register-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* ---- confirmation page ---- */
+.confirmation-page table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.confirmation-page caption { text-align: left; font-weight: 700; padding-bottom: 0.4rem; }
+.confirmation-page th, .confirmation-page td { border-bottom: 1px solid var(--line); padding: 0.5rem; text-align: left; }
+.confirmation-page .reference { font-size: 1.4rem; letter-spacing: 0.05em; }
+
+/* ---- footer demo panel ---- */
+.demo-controls { border: 1px dashed var(--line); border-radius: 8px; padding: 0.75rem 1rem; display: grid; gap: 0.5rem; justify-items: start; margin: 1rem 0; }
+.demo-controls .demo-check { display: flex; align-items: center; gap: 0.6rem; min-height: 44px; }
+.demo-controls input[type="checkbox"] { width: 22px; height: 22px; }
