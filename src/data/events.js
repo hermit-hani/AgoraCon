@@ -1,5 +1,5 @@
 // Local data for AgoraCon. Every record has a stable `id` (FR03) that is used
-// for React keys and for the /sessions/:id route.
+// for React keys and for the /events/:id route.
 //
 // Field guide (each field exists because a rule or feature needs it):
 //   start / end      ISO local date-time strings -> used by the clash rule
@@ -11,10 +11,10 @@
 //   earlyBirdUntil   last day the early-bird price applies, or null (pricing rule)
 //   price            in PKR, before any discount
 //
-// NOTE: these are sample sessions to prove the pipeline works. The full list
-// of 10+ sessions is added in a later stage. All names and text are original.
+// NOTE: these are sample events to prove the pipeline works. The full list
+// of 10+ events is added in a later stage. All names and text are original.
 
-export const sessions = [
+export const events = [
   {
     id: "zeus-opening-keynote",
     title: "The Thunder Opening",

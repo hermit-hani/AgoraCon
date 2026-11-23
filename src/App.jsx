@@ -2,8 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
-import SessionDetailsPage from "./pages/SessionDetailsPage.jsx";
-import SessionsPage from "./pages/SessionsPage.jsx";
+import EventDetailsPage from "./pages/EventDetailsPage.jsx";
+import EventsPage from "./pages/EventsPage.jsx";
 
 // Route table. Layout is the parent route; its children render in <Outlet />.
 export default function App() {
@@ -11,8 +11,8 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="sessions" element={<SessionsPage />} />
-        <Route path="sessions/:id" element={<SessionDetailsPage />} />
+        <Route path="events" element={<EventsPage />} />
+        <Route path="events/:id" element={<EventDetailsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

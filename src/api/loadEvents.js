@@ -1,4 +1,4 @@
-import { sessions } from "../data/sessions.js";
+import { events } from "../data/events.js";
 
 // Demo control (FR14 / Task 6.1): when this localStorage flag is "true" the
 // loader rejects, so we can show the error + retry state on purpose.
@@ -9,7 +9,7 @@ const FAKE_DELAY_MS = 900;
 
 // Pretends to be a network request. Returns a Promise so the rest of the app
 // is written exactly as it would be with a real API.
-export async function loadSessions() {
+export async function loadEvents() {
   await new Promise((resolve) => setTimeout(resolve, FAKE_DELAY_MS));
 
   let shouldFail = false;
@@ -24,5 +24,5 @@ export async function loadSessions() {
   }
 
   // Return a copy so callers can never mutate the original data module.
-  return sessions.map((s) => ({ ...s }));
+  return events.map((s) => ({ ...s }));
 }

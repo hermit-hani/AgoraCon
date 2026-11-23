@@ -1,15 +1,15 @@
-import { useSessions } from "../context/SessionsContext.jsx";
+import { useEvents } from "../context/EventsContext.jsx";
 
 // Wrapper that handles the loading / error states once (FR14), so pages only
 // render their real content when data is ready.
 //   <DataStatus>...page content...</DataStatus>
 export default function DataStatus({ children }) {
-  const { status, errorMessage, retry } = useSessions();
+  const { status, errorMessage, retry } = useEvents();
 
   if (status === "loading") {
     return (
       <p role="status" className="notice">
-        Consulting the Oracle&hellip; loading sessions.
+        Consulting the Oracle&hellip; loading events.
       </p>
     );
   }

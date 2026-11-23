@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FAIL_FLAG_KEY } from "../api/loadSessions.js";
+import { FAIL_FLAG_KEY } from "../api/loadEvents.js";
 
 // Clearly labelled demo control required by Task 6.1.
 // A controlled checkbox whose initial value is read from localStorage.

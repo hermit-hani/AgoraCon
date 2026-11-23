@@ -38,9 +38,9 @@ export default function HomePage() {
       </div>
 
       <div className="hero-actions">
-        <Link to="/sessions" className="action-button action-button-filled">
+        <Link to="/events" className="action-button action-button-filled">
           <ButtonIcon />
-          <span>Browse Sessions</span>
+          <span>Browse Events</span>
         </Link>
       </div>
     </section>

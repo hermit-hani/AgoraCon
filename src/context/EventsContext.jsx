@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { loadSessions } from "../api/loadSessions.js";
+import { loadEvents } from "../api/loadEvents.js";
 
-// ONE source of truth for session data (FR08). Any page can read it with
-// useSessions() instead of each page loading its own copy.
-const SessionsContext = createContext(null);
+// ONE source of truth for event data (FR08). Any page can read it with
+// useEvents() instead of each page loading its own copy.
+const EventsContext = createContext(null);
 
-export function SessionsProvider({ children }) {
-  const [sessions, setSessions] = useState([]);
+export function EventsProvider({ children }) {
+  const [events, setEvents] = useState([]);
   // status is one of: "loading" | "error" | "success"
   const [status, setStatus] = useState("loading");
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,9 +21,9 @@ export function SessionsProvider({ children }) {
     async function run() {
       setStatus("loading");
       try {
-        const data = await loadSessions();
+        const data = await loadEvents();
         if (cancelled) return;
-        setSessions(data);
+        setEvents(data);
         setStatus("success");
       } catch (err) {
         if (cancelled) return;
@@ -41,16 +41,16 @@ export function SessionsProvider({ children }) {
   // Functional update: the next value depends on the previous one.
   const retry = () => setAttempt((n) => n + 1);
 
-  const value = { sessions, status, errorMessage, retry };
+  const value = { events, status, errorMessage, retry };
   return (
-    <SessionsContext.Provider value={value}>{children}</SessionsContext.Provider>
+    <EventsContext.Provider value={value}>{children}</EventsContext.Provider>
   );
 }
 
-export function useSessions() {
-  const ctx = useContext(SessionsContext);
+export function useEvents() {
+  const ctx = useContext(EventsContext);
   if (ctx === null) {
-    throw new Error("useSessions must be used inside <SessionsProvider>");
+    throw new Error("useEvents must be used inside <EventsProvider>");
   }
   return ctx;
 }

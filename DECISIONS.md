@@ -5,4 +5,4 @@
 
 ## 1. (Finding events: search and filters) TBD
 ## 2. (Keeping your place: scroll/filters survive navigation) TBD
-## 3. (Planning across sessions: total and clash check) TBD
+## 3. (Planning across events: total and clash check) TBD

@@ -36,7 +36,7 @@ export default function Layout() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/sessions">Sessions</NavLink>
+              <NavLink to="/events">Events</NavLink>
             </li>
           </ul>
         </nav>
@@ -46,7 +46,7 @@ export default function Layout() {
       </main>
       <footer className="site-footer">
         <p>
-          AgoraCon is a fictional festival. All sessions, bookings and payments
+          AgoraCon is a fictional festival. All events, bookings and payments
           are simulated.
         </p>
         <DemoControls />

@@ -1,7 +1,7 @@
 # AgoraCon
 
 A fictional three-day festival run by the Olympian gods on a university campus.
-Visitors browse sessions, build a schedule and register (all simulated).
+Visitors browse events, build a schedule and register (all simulated).
 
 CS4032 Web Programming, Assignment 02, Fall 2026.
 Student: Umm-e-Hani | Roll no: 24I-2113 | Section: _fill in_
@@ -22,8 +22,8 @@ npm test          # node --test (business-rule tests, added later)
 | Route | Purpose |
 |---|---|
 | `/` | Home |
-| `/sessions` | Session list |
-| `/sessions/:id` | Session details (invalid IDs show a helpful message) |
+| `/events` | Session list |
+| `/events/:id` | Session details (invalid IDs show a helpful message) |
 
 ## Demo controls
 
