@@ -30,10 +30,12 @@ function formatWhen(startIso, endIso) {
 // Availability is always shown as TEXT (never colour alone).
 function seatStatus(event) {
   const left = seatsLeft(event);
-  if (left === 0) return { text: "Sold out: no seats left", tone: "out" };
+  // Team events are sold per team (one registration = one team), so count teams.
+  const noun = event.maxTeam > 1 && event.minTeam === event.maxTeam ? (left === 1 ? "team" : "teams") : left === 1 ? "seat" : "seats";
+  if (left === 0) return { text: `Sold out: no ${noun === "team" || noun === "teams" ? "teams" : "seats"} left`, tone: "out" };
   if (left <= Math.max(5, Math.round(event.capacity * 0.1)))
-    return { text: `Almost full: only ${left} seats left`, tone: "low" };
-  return { text: `${left} seats left`, tone: "ok" };
+    return { text: `Almost full: only ${left} ${noun} left`, tone: "low" };
+  return { text: `${left} ${noun} left`, tone: "ok" };
 }
 
 // Props in: one event. No state here: it only displays data.
@@ -69,7 +71,10 @@ export default function EventCard({ event }) {
         </div>
         <div>
           <dt>Price</dt>
-          <dd>{price === 0 ? "Free" : `PKR ${price.toLocaleString("en-US")}`}</dd>
+          <dd>
+            {price === 0 ? "Free" : `PKR ${price.toLocaleString("en-US")}`}
+            {maxTeam > 1 && price > 0 ? " per person" : ""}
+          </dd>
         </div>
       </dl>
       <ul className="chips" aria-label="Event conditions">
