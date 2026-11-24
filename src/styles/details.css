@@ -1,50 +1,151 @@
-/* Event details page. Every rule is scoped under .details-page so it can't affect other pages.
-   Colours come from the site's variables when present, with dark-teal / salmon fallbacks. */
+/* Event details page, in the homepage's language: midnight and deep teal, antique gold, ivory.
+   Everything is scoped under .details-page so no other page is affected.
+   Fonts (Cinzel, Rozha One, Cormorant Garamond, Great Vibes) must be loaded in index.html
+   with the same Google Fonts link the homepage uses; the Georgia fallbacks keep it readable. */
 
 .details-page {
-  --accent: var(--salmon, #ffb4a2);
-  --panel: rgba(255, 255, 255, 0.06);
-  --line: rgba(255, 255, 255, 0.28);
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 1rem;
-}
-.details-page .details-head h1 { margin: 0.25rem 0 0.5rem; }
-.details-page .details-summary { margin: 0; max-width: 46rem; font-size: 1.1rem; }
+  --midnight: #10272e;
+  --deep-teal: #183b40;
+  --gold: #c4a36a;
+  --pale-gold: #e2c995;
+  --ivory: #f7f1e7;
+  --muted-ivory: rgba(247, 241, 231, 0.82);
+  --glass: rgba(220, 232, 222, 0.08);
+  --glass-border: rgba(232, 214, 173, 0.26);
 
-.details-page .details-layout { display: grid; gap: 1.5rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
-/* On wide screens: content on the left, booking panel on the right. On phones the
-   booking panel comes FIRST (order: -1) so the price and button are not buried. */
+  position: relative;
+  isolation: isolate;
+  max-width: 74rem;
+  margin: 1rem auto 2.5rem;
+  padding: clamp(1.25rem, 3.5vw, 2.75rem);
+  color: var(--ivory);
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(196, 163, 106, 0.16), transparent 46%),
+    linear-gradient(180deg, var(--deep-teal) 0%, var(--midnight) 100%);
+  border: 1px solid var(--glass-border);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  /* Cormorant's default numerals are old-style (a '0' looks like an 'o'); lining figures read better for times and prices. */
+  font-variant-numeric: lining-nums;
+}
+
+/* Thin inner gold frame, like the homepage hero. It fades in once on load. */
+.details-page::before {
+  position: absolute;
+  z-index: -1;
+  inset: 10px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(227, 202, 151, 0.22);
+  animation: details-frame 1.2s ease-out both;
+}
+@keyframes details-frame { from { opacity: 0; inset: 22px; } to { opacity: 1; inset: 10px; } }
+@media (prefers-reduced-motion: reduce) { .details-page::before { animation: none; } }
+
+.details-page a { color: var(--pale-gold); }
+.details-page a:focus-visible, .details-page .btn:focus-visible { outline: 3px solid var(--pale-gold); outline-offset: 3px; }
+
+.details-page .details-back { margin: 0 0 1.25rem; font-family: "Cinzel", Georgia, serif; font-size: 0.85rem; letter-spacing: 0.12em; }
+.details-page .details-back a { text-decoration: none; }
+.details-page .details-back a:hover { text-decoration: underline; }
+
+/* ---- banner ---- */
+.details-page .details-hero { display: grid; gap: 1.5rem; grid-template-columns: 1fr; align-items: end; padding-bottom: 1.75rem; border-bottom: 1px solid var(--glass-border); }
+@media (min-width: 52rem) { .details-page .details-hero { grid-template-columns: 1fr auto; gap: 2.5rem; } }
+.details-page .details-host { margin: 0; font-family: "Great Vibes", "Brush Script MT", cursive; font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.1; color: var(--pale-gold); }
+.details-page .details-kicker { margin: 0.25rem 0 0; font-family: "Cinzel", Georgia, serif; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted-ivory); }
+.details-page h1 { margin: 0.4rem 0 0.75rem; font-family: "Rozha One", "Cormorant Garamond", Georgia, serif; font-weight: 400; font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1.05; color: var(--ivory); }
+.details-page .details-summary { margin: 0; max-width: 40rem; font-size: 1.35rem; color: var(--muted-ivory); }
+
+/* The plaque: a notched, gold-edged tablet (same shape as the homepage buttons). */
+.details-page .details-plaque {
+  --cut: 14px;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  min-width: 15rem;
+  padding: 1.4rem 2rem 1.3rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--pale-gold), #a98550);
+  clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+}
+.details-page .details-plaque::before {
+  position: absolute;
+  z-index: -1;
+  inset: 1.5px;
+  content: "";
+  background: rgba(10, 32, 38, 0.94);
+  clip-path: polygon(calc(var(--cut) - 1px) 0, calc(100% - var(--cut) + 1px) 0, 100% calc(var(--cut) - 1px), 100% calc(100% - var(--cut) + 1px), calc(100% - var(--cut) + 1px) 100%, calc(var(--cut) - 1px) 100%, 0 calc(100% - var(--cut) + 1px), 0 calc(var(--cut) - 1px));
+}
+.details-page .plaque-weekday { font-family: "Cinzel", Georgia, serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-ivory); }
+.details-page .plaque-date { font-family: "Rozha One", Georgia, serif; font-size: 2.6rem; line-height: 1.05; color: var(--pale-gold); }
+.details-page .plaque-time { font-family: "Cinzel", Georgia, serif; font-size: 1rem; letter-spacing: 0.08em; }
+.details-page .plaque-zone { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--glass-border); font-size: 1.1rem; font-style: italic; color: var(--muted-ivory); }
+
+/* ---- layout ---- */
+.details-page .details-layout { display: grid; gap: 2rem; grid-template-columns: 1fr; margin-top: 2rem; }
+/* Phones: the booking panel comes first so the price and button aren't buried. */
 .details-page .details-book { order: -1; }
 @media (min-width: 52rem) {
-  .details-page .details-layout { grid-template-columns: 2fr 1fr; align-items: start; }
+  .details-page .details-layout { grid-template-columns: 1fr 21rem; gap: 3rem; align-items: start; }
   .details-page .details-book { order: 0; position: sticky; top: 1rem; }
 }
 
-.details-page section { margin-bottom: 1.75rem; }
-.details-page h2 { margin: 0 0 0.5rem; font-size: 1.3rem; }
+.details-page section { margin-bottom: 2.25rem; }
+/* Section headings: Cinzel with a fading gold rule after the text. */
+.details-page h2 { display: flex; align-items: center; gap: 1rem; margin: 0 0 0.9rem; font-family: "Cinzel", Georgia, serif; font-weight: 600; font-size: 1.3rem; letter-spacing: 0.04em; color: var(--pale-gold); }
+.details-page section h2::after { flex: 1; height: 1px; content: ""; background: linear-gradient(90deg, var(--glass-border), transparent); }
+.details-page .details-main p { max-width: 38rem; font-size: 1.3rem; line-height: 1.65; }
 
-/* Timeline: time in a fixed column, with a vertical line joining the steps. */
-.details-page .timeline { list-style: none; margin: 0; padding: 0 0 0 0.5rem; border-left: 3px solid var(--accent); display: grid; gap: 0.75rem; }
-.details-page .timeline li { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.75rem; padding-left: 0.75rem; }
-.details-page .timeline time { font-weight: 700; font-variant-numeric: tabular-nums; }
+/* ---- timeline: a gold line with a diamond at each step ---- */
+.details-page .timeline { list-style: none; margin: 0.5rem 0 0 0.4rem; padding: 0 0 0 1.6rem; border-left: 1px solid var(--gold); display: grid; gap: 1rem; }
+.details-page .timeline li { position: relative; display: grid; grid-template-columns: 4.6rem 1fr; gap: 0.75rem; align-items: baseline; }
+.details-page .timeline li::before { position: absolute; left: calc(-1.6rem - 5px); top: 0.55em; width: 9px; height: 9px; content: ""; background: var(--gold); transform: rotate(45deg); }
+.details-page .timeline time { font-family: "Cinzel", Georgia, serif; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.06em; color: var(--pale-gold); font-variant-numeric: tabular-nums; }
+.details-page .timeline span { font-size: 1.25rem; }
 
-/* Prizes: place, cash and item on one row; wraps on narrow screens. */
-.details-page .prizes { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
-.details-page .prizes li { display: grid; grid-template-columns: 3rem 7rem 1fr; gap: 0.75rem; align-items: baseline; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 0.6rem 0.8rem; }
-@media (max-width: 30rem) { .details-page .prizes li { grid-template-columns: 3rem 1fr; } .details-page .prizes li span:last-child { grid-column: 2; } }
+/* ---- prizes: three tablets, first place picked out in gold ---- */
+.details-page .details-note { margin: 0; font-size: 1.05rem; color: var(--muted-ivory); }
+.details-page section .details-note { margin-bottom: 0.9rem; }
+.details-page .prizes { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; grid-template-columns: 1fr; }
+@media (min-width: 40rem) { .details-page .prizes { grid-template-columns: repeat(3, 1fr); } }
+.details-page .prizes li { display: grid; gap: 0.2rem; align-content: start; padding: 1rem 1.1rem 1.1rem; background: var(--glass); border: 1px solid var(--glass-border); border-top: 3px solid var(--gold); }
+.details-page .prizes li:first-child { background: rgba(196, 163, 106, 0.16); border-color: var(--gold); border-top-width: 3px; }
+.details-page .prizes strong { font-family: "Cinzel", Georgia, serif; font-size: 0.95rem; letter-spacing: 0.14em; color: var(--pale-gold); }
+.details-page .prizes li span:nth-of-type(1) { font-family: "Rozha One", Georgia, serif; font-size: 1.8rem; line-height: 1.15; }
+.details-page .prizes li span:nth-of-type(2) { font-size: 1.15rem; color: var(--muted-ivory); }
 
-.details-page .details-book { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; display: grid; gap: 0.75rem; }
+/* ---- booking panel ---- */
+.details-page .details-book { display: grid; gap: 0.9rem; padding: 1.4rem; background: rgba(10, 32, 38, 0.72); border: 1px solid var(--gold); box-shadow: 0 0 0 4px rgba(196, 163, 106, 0.08); }
 .details-page .details-book h2 { margin: 0; }
-.details-page .details-price { margin: 0; font-size: 1.3rem; }
-.details-page .details-price del { opacity: 0.7; }
-.details-page .details-note { margin: 0; font-size: 0.9rem; opacity: 0.9; }
-.details-page .details-facts { margin: 0; display: grid; gap: 0.5rem; }
-.details-page .details-facts div { display: grid; gap: 0.1rem; }
-.details-page .details-facts dt { font-weight: 700; }
-.details-page .details-facts dd { margin: 0; }
-.details-page .details-book .btn { display: inline-flex; align-items: center; justify-content: center; }
+.details-page .details-price { margin: 0; font-size: 1.15rem; color: var(--muted-ivory); }
+.details-page .details-price strong { font-family: "Rozha One", Georgia, serif; font-weight: 400; font-size: 2.2rem; color: var(--pale-gold); }
+.details-page .details-price del { margin-right: 0.4rem; opacity: 0.7; }
+.details-page .details-facts { margin: 0; display: grid; gap: 0.6rem; padding: 0.9rem 0; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); }
+.details-page .details-facts div { display: flex; justify-content: space-between; gap: 1rem; }
+.details-page .details-facts dt { font-family: "Cinzel", Georgia, serif; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-ivory); padding-top: 0.2rem; }
+.details-page .details-facts dd { margin: 0; text-align: right; }
 
-/* Text for screen readers only (used for the "Normal price" label before the crossed-out price). */
+/* Buttons: same Cinzel plaque look as the homepage. The primary one is the notched gold plate. */
+.details-page .details-book .btn {
+  --cut: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 3rem; padding: 0 1.4rem;
+  font-family: "Cinzel", Georgia, serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--pale-gold); background: transparent; border: 2px solid var(--gold); border-radius: 0; cursor: pointer;
+}
+.details-page .details-book .btn-primary {
+  color: #172a2d; border: 0;
+  background: linear-gradient(135deg, #e8d09c, var(--gold));
+  clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+}
+.details-page .details-book .btn:hover:not(:disabled) { filter: drop-shadow(0 0 10px rgba(226, 201, 149, 0.5)); }
+.details-page .details-book .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Text for screen readers only (the "Normal price" label before the crossed-out price). */
 .details-page .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.details-page section .details-note { margin-bottom: 0.6rem; }
+
+.details-page .details-facts dd small { display: block; font-size: 0.95rem; color: var(--muted-ivory); }

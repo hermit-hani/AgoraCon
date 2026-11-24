@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import DataStatus from "../components/DataStatus.jsx";
 import AddToPlanButton from "../components/AddToPlanButton.jsx";
-import { formatWhen } from "../components/EventCard.jsx";
 import { useEvents } from "../context/EventsContext.jsx";
 import { isTeamEvent, rangeLabel, seatsLabel } from "../rules/seats.js";
 import { formatPKR, isEarlyBird, todayISO, unitPrice } from "../rules/pricing.js";
@@ -12,6 +11,19 @@ import "../styles/details.css";
 function formatDay(isoDay) {
   const [y, m, d] = isoDay.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
+// Splits an event's time into the pieces the banner plaque shows:
+// { weekday: "Saturday", date: "5 Dec", time: "09:00 to 11:00" }.
+function plaqueParts(startIso, endIso) {
+  const start = new Date(startIso);
+  const end = new Date(endIso);
+  const clock = (d) => d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  return {
+    weekday: start.toLocaleDateString("en-GB", { weekday: "long" }),
+    date: start.toLocaleDateString("en-GB", { day: "numeric", month: "short" }),
+    time: `${clock(start)} to ${clock(end)}`,
+  };
 }
 
 // What "cash" in the prize list is paid to, depending on the event.
@@ -48,21 +60,33 @@ function Details() {
   const today = todayISO();
   const early = isEarlyBird(event, today);
   const team = isTeamEvent(event);
+  const when = plaqueParts(event.start, event.end);
   const { about, schedule, prize } = event; // schedule and prize are optional: check before using
 
   return (
     <article className="details-page">
-      <p>
+      <p className="details-back">
         <Link to="/events">&larr; All events</Link>
       </p>
 
-      <header className="details-head">
-        <p className="card-kicker">
-          {event.type}
-          {event.format && <> &middot; {event.format}</>} &middot; hosted by {event.host}
-        </p>
-        <h1>{event.title}</h1>
-        <p className="details-summary">{event.summary}</p>
+      <header className="details-hero">
+        <div className="details-hero-text">
+          <p className="details-host">{event.host} presents</p>
+          <p className="details-kicker">
+            {event.type}
+            {event.format && <> &middot; {event.format}</>}
+          </p>
+          <h1>{event.title}</h1>
+          <p className="details-summary">{event.summary}</p>
+        </div>
+
+        {/* When and where live here, so the booking panel doesn't repeat them. */}
+        <div className="details-plaque" role="group" aria-label="When and where">
+          <span className="plaque-weekday">{when.weekday}</span>
+          <span className="plaque-date">{when.date}</span>
+          <span className="plaque-time">{when.time}</span>
+          <span className="plaque-zone">{event.zone}</span>
+        </div>
       </header>
 
       <div className="details-layout">
@@ -123,17 +147,10 @@ function Details() {
 
           <dl className="details-facts">
             <div>
-              <dt>When</dt>
-              <dd>{formatWhen(event.start, event.end)}</dd>
-            </div>
-            <div>
-              <dt>Where</dt>
-              <dd>{event.zone}</dd>
-            </div>
-            <div>
               <dt>Availability</dt>
               <dd>
-                {seatsLabel(event)} (capacity {event.capacity})
+                {seatsLabel(event)}
+                <small>capacity {event.capacity}</small>
               </dd>
             </div>
             <div>
