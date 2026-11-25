@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { dayOf, seatsLeft } from "../rules/filtering.js";
 import AddToPlanButton from "./AddToPlanButton.jsx";
+import { capacityUnit } from "../rules/seats.js";
+import "../styles/card-link.css";
 
 // One emoji per host god, shown before the event title.
 const GOD_EMOJI = {
@@ -29,11 +31,13 @@ function formatWhen(startIso, endIso) {
 }
 
 // Availability is always shown as TEXT (never colour alone).
-// Every member of a team takes one seat, so seats are counted in seats for all events.
+// Fixed-size team events count TEAMS ("3 teams left"); every other event counts seats.
+// (capacityUnit in rules/seats.js decides which.)
 function seatStatus(event) {
   const left = seatsLeft(event);
-  const noun = left === 1 ? "seat" : "seats";
-  if (left === 0) return { text: "Sold out: no seats left", tone: "out" };
+  const unit = capacityUnit(event);
+  const noun = left === 1 ? unit : `${unit}s`;
+  if (left === 0) return { text: `Sold out: no ${unit}s left`, tone: "out" };
   if (left <= Math.max(5, Math.round(event.capacity * 0.1)))
     return { text: `Almost full: only ${left} ${noun} left`, tone: "low" };
   return { text: `${left} ${noun} left`, tone: "ok" };
@@ -55,7 +59,7 @@ export default function EventCard({ event }) {
         <span className="event-emoji" aria-hidden="true">
           {GOD_EMOJI[host] ?? "🏛️"}
         </span>
-        <Link to={`/events/${id}`}>{title}</Link>
+        <Link to={`/events/${id}`} state={{ fromList: true }}>{title}</Link>
       </h2>
       <p className="event-summary">{summary}</p>
       <dl className="event-facts">

@@ -1,8 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import DataStatus from "../components/DataStatus.jsx";
 import AddToPlanButton from "../components/AddToPlanButton.jsx";
 import { useEvents } from "../context/EventsContext.jsx";
-import { isTeamEvent, rangeLabel, seatsLabel } from "../rules/seats.js";
+import { capacityUnit, isFixedTeam, isTeamEvent, rangeLabel, seatsLabel } from "../rules/seats.js";
 import { formatPKR, isEarlyBird, todayISO, unitPrice } from "../rules/pricing.js";
 import "../styles/details.css";
 
@@ -39,6 +39,9 @@ function Details() {
   // useParams reads the :id part of the URL (/events/:id).
   const { id } = useParams();
   const { events } = useEvents();
+  const navigate = useNavigate();
+  // The card passed `fromList: true` when it opened this page.
+  const fromList = useLocation().state?.fromList === true;
   const event = events.find((e) => e.id === id);
 
   // FR02: an invalid ID gets useful feedback and a way forward.
@@ -66,7 +69,19 @@ function Details() {
   return (
     <article className="details-page">
       <p className="details-back">
-        <Link to="/events">&larr; All events</Link>
+        {/* Came from the list? Go BACK one step, so the same filters and scroll position return.
+            Opened from a link or typed URL? Fall back to a normal link to /events. */}
+        <Link
+          to="/events"
+          onClick={(e) => {
+            if (fromList) {
+              e.preventDefault();
+              navigate(-1);
+            }
+          }}
+        >
+          &larr; All events
+        </Link>
       </p>
 
       <header className="details-hero">
@@ -150,7 +165,7 @@ function Details() {
               <dt>Availability</dt>
               <dd>
                 {seatsLabel(event)}
-                <small>capacity {event.capacity}</small>
+                <small>capacity {event.capacity} {capacityUnit(event)}s</small>
               </dd>
             </div>
             <div>
@@ -159,7 +174,7 @@ function Details() {
             </div>
             <div>
               <dt>{team ? "Team size" : "Booking"}</dt>
-              <dd>{team ? (event.minTeam === event.maxTeam ? `${event.minTeam} people` : `${event.minTeam} to ${event.maxTeam} people`) : rangeLabel(event)}</dd>
+              <dd>{team ? (isFixedTeam(event) ? `${event.minTeam} people` : `${event.minTeam} to ${event.maxTeam} people`) : rangeLabel(event)}</dd>
             </div>
           </dl>
 

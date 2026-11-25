@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useEvents } from "../context/EventsContext.jsx";
 import { usePlan } from "../context/PlanContext.jsx";
 import { buildPlan } from "../rules/plan.js";
-import { isTeamEvent, rangeLabel, seatsLabel } from "../rules/seats.js";
+import { isFixedTeam, isTeamEvent, rangeLabel, seatsLabel } from "../rules/seats.js";
 import { formatPKR, todayISO } from "../rules/pricing.js";
 import "../styles/plan.css";
 
@@ -56,19 +56,24 @@ export default function PlanPage() {
                 <h2><Link to={`/events/${event.id}`}>{event.title}</Link></h2>
                 <p className="plan-meta">{event.host} &middot; {event.zone} &middot; {seatsLabel(event)}</p>
 
-                <div className="plan-qty">
-                  <label htmlFor={qtyId}>{team ? "Team size" : "Seats"}</label>
-                  <input
-                    id={qtyId}
-                    type="number"
-                    inputMode="numeric"
-                    step="1"
-                    value={line.quantity}
-                    onChange={(e) => setQuantity(event.id, Number(e.target.value))}
-                    aria-describedby={`${qtyId}-hint`}
-                  />
-                  <span id={`${qtyId}-hint`} className="plan-hint">{rangeLabel(event)}</span>
-                </div>
+                {isFixedTeam(event) ? (
+                  // A team of an exact size: nothing to change, so show it as text.
+                  <p className="plan-meta">One team of {event.minTeam} people ({rangeLabel(event).toLowerCase()})</p>
+                ) : (
+                  <div className="plan-qty">
+                    <label htmlFor={qtyId}>{team ? "Group size" : "Seats"}</label>
+                    <input
+                      id={qtyId}
+                      type="number"
+                      inputMode="numeric"
+                      step="1"
+                      value={line.quantity}
+                      onChange={(e) => setQuantity(event.id, Number(e.target.value))}
+                      aria-describedby={`${qtyId}-hint`}
+                    />
+                    <span id={`${qtyId}-hint`} className="plan-hint">{rangeLabel(event)}</span>
+                  </div>
+                )}
 
                 <p className="plan-price">
                   {formatPKR(line.unit)}{team ? " per person" : " per seat"} &times; {line.quantity} ={" "}

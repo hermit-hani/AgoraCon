@@ -13,35 +13,17 @@
   --glass: rgba(220, 232, 222, 0.08);
   --glass-border: rgba(232, 214, 173, 0.26);
 
-  position: relative;
-  isolation: isolate;
+  /* No background of its own: the page shows whatever background the events page has. */
   max-width: 74rem;
   margin: 1rem auto 2.5rem;
-  padding: clamp(1.25rem, 3.5vw, 2.75rem);
-  color: var(--ivory);
-  background:
-    radial-gradient(ellipse at 12% 0%, rgba(196, 163, 106, 0.16), transparent 46%),
-    linear-gradient(180deg, var(--deep-teal) 0%, var(--midnight) 100%);
-  border: 1px solid var(--glass-border);
+  padding: clamp(1rem, 3vw, 2rem);
+  color: var(--glass);
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: 1.2rem;
   line-height: 1.6;
   /* Cormorant's default numerals are old-style (a '0' looks like an 'o'); lining figures read better for times and prices. */
   font-variant-numeric: lining-nums;
 }
-
-/* Thin inner gold frame, like the homepage hero. It fades in once on load. */
-.details-page::before {
-  position: absolute;
-  z-index: -1;
-  inset: 10px;
-  content: "";
-  pointer-events: none;
-  border: 1px solid rgba(227, 202, 151, 0.22);
-  animation: details-frame 1.2s ease-out both;
-}
-@keyframes details-frame { from { opacity: 0; inset: 22px; } to { opacity: 1; inset: 10px; } }
-@media (prefers-reduced-motion: reduce) { .details-page::before { animation: none; } }
 
 .details-page a { color: var(--pale-gold); }
 .details-page a:focus-visible, .details-page .btn:focus-visible { outline: 3px solid var(--pale-gold); outline-offset: 3px; }

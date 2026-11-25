@@ -1,0 +1,25 @@
+/* Makes the WHOLE event card clickable while keeping a single real link (the title).
+   The title link's ::after is stretched over the entire card, so a click anywhere opens the event.
+   Keyboard and screen-reader users still meet exactly one link per card.
+   The Add to plan button is lifted above the stretched link so it keeps working. */
+
+.event-card {
+  position: relative; /* the stretched link is positioned against the card */
+  cursor: pointer;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+.event-card .event-title a::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+}
+.event-card .btn {
+  position: relative;
+  z-index: 2; /* above the stretched link */
+  cursor: pointer;
+}
+.event-card:hover { border-color: rgba(226, 201, 149, 0.7); }
+/* When the title link has keyboard focus, show the ring around the whole card. */
+.event-card:focus-within { outline: 2px solid rgba(226, 201, 149, 0.9); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .event-card { transition: none; } }

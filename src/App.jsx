@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout.jsx";
+import ScrollManager from "./components/ScrollManager.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import EventDetailsPage from "./pages/EventDetailsPage.jsx";
@@ -11,7 +12,10 @@ import ConfirmationPage from "./pages/ConfirmationPage.jsx";
 // Route table. Layout is the parent route; its children render in <Outlet />.
 export default function App() {
   return (
-    <Routes>
+    <>
+      {/* Resets scroll when opening a page, restores it on Back. Renders nothing. */}
+      <ScrollManager />
+      <Routes>
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="events" element={<EventsPage />} />
@@ -21,6 +25,7 @@ export default function App() {
         <Route path="confirmation" element={<ConfirmationPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
-    </Routes>
+      </Routes>
+    </>
   );
 }
